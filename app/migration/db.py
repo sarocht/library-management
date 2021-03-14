@@ -10,4 +10,5 @@ def migrate():
         migrate db
     """
     from app.model.books import Books
+    from app.model.history import History
     db.create_all()

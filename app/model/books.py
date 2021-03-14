@@ -18,5 +18,4 @@ class Books(db.Model):
     created_date = db.Column(db.DateTime, default=datetime.utcnow())
 
     def __repr__(self):
-        return "<books(isbn='%s', title='%s')"
-
+        return "<books(isbn='%s', title='%s')" % (self.isbn, self.title)
