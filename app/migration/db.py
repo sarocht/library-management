@@ -1,4 +1,5 @@
 from flask import Blueprint
+from .. import db
 
 db_bp = Blueprint('migration', __name__)
 
@@ -8,5 +9,5 @@ def migrate():
     """
         migrate db
     """
-    # TODO
-    pass
+    from app.model.books import Books
+    db.create_all()
