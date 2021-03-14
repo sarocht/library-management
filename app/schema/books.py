@@ -1,9 +1,11 @@
+"""
+    Book schemas
+"""
+
 add_book_schema = {
     "type": "object",
     "properties": {
-        "type": {"type": "string"},
-        "isbn": {"type": "string"},
-        "book_name": {"type": "string"}
+        "isbn": {"type": "string"}
     },
-    "required": ["type"]
+    "required": ["isbn"]
 }

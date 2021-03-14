@@ -10,9 +10,8 @@ books_bp = Blueprint("books_app", __name__)
 @books_bp.route("/book", methods=["POST"])
 @expects_json(add_book_schema)
 def add_book():
-    data = request.get_json()
-    books_service.add_book(data.get("type"), data.get("isbn"), data.get("book_name"))
-    return "ADD BOOK"
+    _input = request.get_json()
+    return books_service.add_book(isbn=_input.get("isbn"))
 
 
 @books_bp.route("/book", methods=["GET"])
