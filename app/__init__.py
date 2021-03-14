@@ -12,7 +12,7 @@ def create_app() -> Flask:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:mysecretpassword@localhost:5432/postgres'
     db.init_app(app)
 
-    from app.controller.books import books_bp
+    from app.controller.books_controller import books_bp
     from app.migration.db import db_bp
 
     app.register_blueprint(books_bp)
