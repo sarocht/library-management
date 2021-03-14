@@ -1,13 +1,17 @@
-from flask import Blueprint
-from ..service import books_service
+from flask import Blueprint, request
+from flask_expects_json import expects_json
+
+from app.service import books_service
+from app.schema.books import add_book_schema
 
 books_bp = Blueprint("books_app", __name__)
 
 
 @books_bp.route("/book", methods=["POST"])
+@expects_json(add_book_schema)
 def add_book():
-    # TODO
-    books_service.add_book()
+    data = request.get_json()
+    books_service.add_book(data.get("type"), data.get("isbn"), data.get("book_name"))
     return "ADD BOOK"
 
 
