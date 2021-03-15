@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_expects_json import expects_json
 
 from app.service import books_service
-from app.schema.books import add_book_schema
+from app.schema.books import *
 
 books_bp = Blueprint("books_app", __name__)
 
@@ -24,9 +24,10 @@ def get_book():
 
 
 @books_bp.route("/book", methods=["PUT"])
+@expects_json(update_book_schema)
 def update_book():
-    # TODO
-    return "UPDATE BOOK"
+    _input = request.get_json()
+    return books_service.update_book(_input)
 
 
 @books_bp.route("/book", methods=["DELETE"])

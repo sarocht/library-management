@@ -3,8 +3,7 @@ from app.external_api.google_books import GoogleBookAPI
 
 from datetime import datetime, date
 from dictor import dictor
-from flask import jsonify
-import logging
+from typing import Dict
 
 
 def add_book(isbn: str):
@@ -74,6 +73,9 @@ def add_book(isbn: str):
 
 
 def get_book(typ: str, isbn: str, title: str):
+    """
+        Search books by isbn or book title
+    """
     if typ not in ["isbn", "title"]:
         return {
             "status": "failed",
@@ -107,9 +109,49 @@ def get_book(typ: str, isbn: str, title: str):
     return {"books": books}
 
 
-def update_book():
-    # TODO
-    pass
+def update_book(book: Dict):
+    """
+        update book using isbn key
+        Only existing field will by updated
+    """
+
+    try:
+        if book.get("published_date"):
+            book["published_date"] = datetime.strptime(book.get("published_date"), "%Y-%m-%d")
+        if book.get("created_date"):
+            book["created_date"] = datetime.strptime(book.get("created_date"), "%Y-%m-%d")
+        if book.get("status") and book["status"] not in ["Borrow", "Available"]:
+            return {
+                "status": "failed",
+                "error_message": "Invalid status"
+            }, 404
+    except:
+        return {
+            "status": "failed",
+            "error_message": "cannot convert string to date format"
+        }, 404
+
+    try:
+        Books.update_book(
+            isbn=book["isbn"],
+            title=book.get("title"),
+            subtitle=book.get("subtitle"),
+            publisher=book.get("publisher"),
+            published_date=book.get("published_date"),
+            page_count=book.get("page_count"),
+            info_link=book.get("info_link"),
+            status=book.get("status"),
+            created_date=book.get("created_date")
+        )
+    except:
+        return {
+            "status": "failed",
+            "error_message": "database error"
+        }, 500
+
+    return {
+        "status": "success"
+    }
 
 
 def delete_book():

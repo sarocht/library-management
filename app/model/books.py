@@ -63,3 +63,28 @@ class Books(db.Model, SerializerMixin):
             return [result.to_dict() for result in results]
         except SQLAlchemyError as e:
             return e
+
+    @staticmethod
+    def update_book(isbn: str, title: str, subtitle: str, publisher: str,
+                    published_date: date, page_count: int, info_link: str, status: str, created_date: date):
+        try:
+            book = db.session.query(Books).filter_by(isbn=isbn).first()
+            if title is not None:
+                book.title = title
+            if subtitle is not None:
+                book.subtitle = subtitle
+            if publisher is not None:
+                book.publisher = publisher
+            if published_date is not None:
+                book.published_date = published_date
+            if page_count is not None:
+                book.page_count = page_count
+            if info_link is not None:
+                book.info_link = info_link
+            if status is not None:
+                book.status = status
+            if created_date is not None:
+                book.created_date = created_date
+            db.session.commit()
+        except SQLAlchemyError as e:
+            return e
