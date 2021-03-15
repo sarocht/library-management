@@ -13,6 +13,18 @@ def add_book(isbn: str):
         and have only one in Google Books
     """
     try:
+        if Books.get_book_by_isbn(isbn):
+            return {
+                "status": "failed",
+                "error_message": "book already exists"
+            }
+    except:
+        return {
+            "status": "failed",
+            "error_message": "database error"
+        }
+
+    try:
         books = GoogleBookAPI.search_books(query=isbn)
     except:
         return {
