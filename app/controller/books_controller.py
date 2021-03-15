@@ -31,9 +31,10 @@ def update_book():
 
 
 @books_bp.route("/book", methods=["DELETE"])
+@expects_json(delete_book_schema)
 def delete_book():
-    # TODO
-    return "DELETE BOOK"
+    _input = request.get_json()
+    return books_service.delete_book(isbn=_input.get("isbn"))
 
 
 @books_bp.route("/books", methods=["GET"])

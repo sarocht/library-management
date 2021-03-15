@@ -154,9 +154,20 @@ def update_book(book: Dict):
     }
 
 
-def delete_book():
-    # TODO
-    pass
+def delete_book(isbn: str):
+    """
+        Delete Book by isbn
+    """
+    try:
+        Books.delete_book(isbn)
+    except:
+        return {
+            "status": "failed",
+            "error_message": "database error"
+        }, 500
+    return {
+        "status": "success"
+    }
 
 
 def get_books():

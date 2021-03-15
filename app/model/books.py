@@ -88,3 +88,12 @@ class Books(db.Model, SerializerMixin):
             db.session.commit()
         except SQLAlchemyError as e:
             return e
+
+    @staticmethod
+    def delete_book(isbn: str):
+        try:
+            book = db.session.query(Books).filter_by(isbn=isbn).first()
+            db.session.delete(book)
+            db.session.commit()
+        except SQLAlchemyError as e:
+            return e
