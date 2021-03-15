@@ -97,3 +97,11 @@ class Books(db.Model, SerializerMixin):
             db.session.commit()
         except SQLAlchemyError as e:
             return e
+
+    @staticmethod
+    def get_all_books():
+        try:
+            books = db.session.query(Books).all()
+            return [book.to_dict() for book in books]
+        except SQLAlchemyError as e:
+            return e

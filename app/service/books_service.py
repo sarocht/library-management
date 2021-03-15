@@ -170,6 +170,18 @@ def delete_book(isbn: str):
     }
 
 
-def get_books():
-    # TODO
-    pass
+def get_all_books():
+    """
+        Get all books in library
+    """
+    try:
+        books = Books.get_all_books()
+    except:
+        return {
+            "status": "failed",
+            "error_message": "database error"
+        }
+
+    return {
+        "books": books
+    }

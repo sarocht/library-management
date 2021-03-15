@@ -39,9 +39,7 @@ def delete_book():
 
 @books_bp.route("/books", methods=["GET"])
 def get_books():
-    # TODO
-    return "GET BOOKS"
-
+    return books_service.get_all_books()
 
 
 
