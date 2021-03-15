@@ -3,6 +3,8 @@ from app.external_api.google_books import GoogleBookAPI
 
 from datetime import datetime, date
 from dictor import dictor
+from flask import jsonify
+import logging
 
 
 def add_book(isbn: str):
@@ -71,9 +73,38 @@ def add_book(isbn: str):
     }, 500
 
 
-def get_book():
-    # TODO
-    pass
+def get_book(typ: str, isbn: str, title: str):
+    if typ not in ["isbn", "title"]:
+        return {
+            "status": "failed",
+            "error_message": "invalid typ"
+        }, 400
+
+    if typ == "isbn":
+        try:
+            books = Books.get_book_by_isbn(isbn)
+            if not books:
+                return {
+                    "status": "failed",
+                    "error_message": "not found"
+                }, 404
+        except Exception as e:
+            return {
+                "status": "failed",
+                "error_message": str(e)
+            }
+    else:
+        try:
+            books = Books.get_book_by_title(title)
+            if not books:
+                return {}, 404
+        except Exception as e:
+            return {
+                "status": "failed",
+                "error_message": str(e)
+            }
+
+    return {"books": books}
 
 
 def update_book():

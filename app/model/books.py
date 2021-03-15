@@ -1,9 +1,11 @@
 from .. import db
+
 from datetime import date, datetime
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy_serializer import SerializerMixin
 
 
-class Books(db.Model):
+class Books(db.Model, SerializerMixin):
     """
     Books model
     """
@@ -31,11 +33,33 @@ class Books(db.Model):
                     title=title,
                     subtitle=subtitle,
                     publisher=publisher,
+                    published_date=published_date,
                     page_count=page_count,
                     info_link=info_link,
                     status=status,
+                    created_date=created_date
                 )
             )
             db.session.commit()
+        except SQLAlchemyError as e:
+            return e
+
+    @staticmethod
+    def get_book_by_isbn(isbn: str):
+        try:
+            results = db.session.query(Books).filter_by(isbn=isbn).all()
+            if not results:
+                return results
+            return [result.to_dict() for result in results]
+        except SQLAlchemyError as e:
+            return e
+
+    @staticmethod
+    def get_book_by_title(title: str):
+        try:
+            results = db.session.query(Books).filter_by(title=title).all()
+            if not results:
+                return results
+            return [result.to_dict() for result in results]
         except SQLAlchemyError as e:
             return e

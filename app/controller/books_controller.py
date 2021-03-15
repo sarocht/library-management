@@ -16,8 +16,11 @@ def add_book():
 
 @books_bp.route("/book", methods=["GET"])
 def get_book():
-    # TODO
-    return "GET BOOK"
+    return books_service.get_book(
+        typ=request.args.get("typ"),
+        isbn=request.args.get("isbn"),
+        title=request.args.get("title")
+    )
 
 
 @books_bp.route("/book", methods=["PUT"])
