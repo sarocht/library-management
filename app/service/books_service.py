@@ -54,16 +54,12 @@ def add_book(isbn: str):
                 and dictor(books, "items.0.volumeInfo.infoLink"):
 
             try:
-                published_date = datetime.strptime(
-                    dictor(books, "items.0.volumeInfo.publishedDate"),
-                    "%Y-%m-%d"
-                ).date()
                 Books.add_book(
                     isbn=isbn,
                     title=dictor(books, "items.0.volumeInfo.title"),
                     subtitle=dictor(books, "items.0.volumeInfo.subtitle"),
                     publisher=dictor(books, "items.0.volumeInfo.publisher"),
-                    published_date=published_date,
+                    published_date=dictor(books, "items.0.volumeInfo.publishedDate"),
                     page_count=dictor(books, "items.0.volumeInfo.pageCount"),
                     info_link=dictor(books, "items.0.volumeInfo.infoLink"),
                     status="Available",
@@ -105,7 +101,7 @@ def get_book(typ: str, isbn: str, title: str):
         except Exception as e:
             return {
                 "status": "failed",
-                "error_message": str(e)
+                "error_message": "database error"
             }
     else:
         try:
@@ -115,7 +111,7 @@ def get_book(typ: str, isbn: str, title: str):
         except Exception as e:
             return {
                 "status": "failed",
-                "error_message": str(e)
+                "error_message": "database error"
             }
 
     return {"books": books}

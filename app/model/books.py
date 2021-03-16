@@ -14,7 +14,7 @@ class Books(db.Model, SerializerMixin):
     title = db.Column(db.String(100), nullable=False)
     subtitle = db.Column(db.String(100))
     publisher = db.Column(db.String(100))
-    published_date = db.Column(db.Date, default=date.today())
+    published_date = db.Column(db.String(100))
     page_count = db.Column(db.Integer, nullable=False)
     info_link = db.Column(db.String(100))
     status = db.Column(db.String(20), nullable=False)
