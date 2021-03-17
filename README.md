@@ -1,8 +1,14 @@
 # library-management
 this project is only used for demo purpose.
 
+### Brief explanation
+To build rest service, I saparate program into 3 layers
+1. controller: mainly responsible for routing
+2. service: responsible for business logic
+3. model: responsible for interaction between server and database
+
 ### Prerequisite
-- postgres server
+- docker [optional: if you already have postgres server, you don't need this]
 - python3.8
 - pipenv
 - pip3
@@ -28,32 +34,42 @@ pipenv shell
 ```
 pip install -r requirements.txt
 ```
-6. set up database configuration, please replace your database information
+6. set up postgres database [optional: if you already have postgres server, you can skip this step]
 ```
-export POSTGRES_DATABASE_USERNAME=YOUR_DATABASE_USERNAME
-export POSTGRES_DATABASE_PASSWORD=YOUR_POSTGRES_DATABASE_PASSWORD
-export POSTGRES_DATABASE_URL=YOUR_POSTGRES_DATABASE_URL
-export POSTGRES_DATABASE_PORT=YOUR_POSTGRES_DATABASE_PORT
-export POSTGRES_DATABASE_NAME=YOUR_POSTGRES_DATABASE_NAME
+docker run -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=postgres -p 5432:5432 library/postgres
 ```
-7. create tables
+7. set up database configuration, please replace your database information.
+[optional: if you set up postgres database by step 6 you can skip this step]
+```
+export POSTGRES_DATABASE_USERNAME=admin
+export POSTGRES_DATABASE_PASSWORD=mysecretpassword
+export POSTGRES_DATABASE_URL=localhost
+export POSTGRES_DATABASE_PORT=5432
+export POSTGRES_DATABASE_NAME=postgres
+```
+8. create tables
 ```
 flask run dropdb
 flask run createdb
 ```
 
-# Run program
+### Run program
 To run program, please set postgres config by using environment variable as below before run the program
 ```
 flask run
 ```
 
-# Run unit test
+### Test program
+One way to test program, you can test by using postman. please import postman collection by using the following link
+https://www.getpostman.com/collections/0e8956d672be5c2dba9d
+
+
+### Run unit test
 ```
 pytest
 ```
 
-### TODO
+# TODO
 - Set logging
 - Read config from YAML file
 - Add Swagger
