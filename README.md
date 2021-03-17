@@ -20,11 +20,23 @@ cd library-management
 ```
 pipenv install
 ```
-4. install libraries
+4. Activate virtual environment
+```
+pipenv shell
+```
+5. install libraries
 ```
 pip install -r requirements.txt
 ```
-5. create tables
+6. set up database configuration, please replace your database information
+```
+export POSTGRES_DATABASE_USERNAME=YOUR_DATABASE_USERNAME
+export POSTGRES_DATABASE_PASSWORD=YOUR_POSTGRES_DATABASE_PASSWORD
+export POSTGRES_DATABASE_URL=YOUR_POSTGRES_DATABASE_URL
+export POSTGRES_DATABASE_PORT=YOUR_POSTGRES_DATABASE_PORT
+export POSTGRES_DATABASE_NAME=YOUR_POSTGRES_DATABASE_NAME
+```
+7. create tables
 ```
 flask run dropdb
 flask run createdb
@@ -33,11 +45,6 @@ flask run createdb
 # Run program
 To run program, please set postgres config by using environment variable as below before run the program
 ```
-export POSTGRES_DATABASE_USERNAME=YOUR_DATABASE_USERNAME
-export POSTGRES_DATABASE_PASSWORD=YOUR_POSTGRES_DATABASE_PASSWORD
-export POSTGRES_DATABASE_URL=YOUR_POSTGRES_DATABASE_URL
-export POSTGRES_DATABASE_PORT=YOUR_POSTGRES_DATABASE_PORT
-export POSTGRES_DATABASE_NAME=YOUR_POSTGRES_DATABASE_NAME
 flask run
 ```
 
