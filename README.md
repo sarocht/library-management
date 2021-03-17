@@ -31,7 +31,13 @@ flask run createdb
 ```
 
 # Run program
+To run program, please set postgres config by using environment variable as below before run the program
 ```
+export POSTGRES_DATABASE_USERNAME=YOUR_DATABASE_USERNAME
+export POSTGRES_DATABASE_PASSWORD=YOUR_POSTGRES_DATABASE_PASSWORD
+export POSTGRES_DATABASE_URL=YOUR_POSTGRES_DATABASE_URL
+export POSTGRES_DATABASE_PORT=YOUR_POSTGRES_DATABASE_PORT
+export POSTGRES_DATABASE_NAME=YOUR_POSTGRES_DATABASE_NAME
 flask run
 ```
 
@@ -39,8 +45,6 @@ flask run
 ```
 pytest
 ```
-
-
 
 ### TODO
 - Set logging
