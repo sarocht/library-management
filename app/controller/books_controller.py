@@ -42,5 +42,7 @@ def get_books():
     return books_service.get_all_books()
 
 
-
-
+@books_bp.route("/book/borrow", methods=["POST"])
+def borrow_book():
+    _input = request.get_json()
+    return books_service.borrow_book(isbn=_input.get("isbn"), created_by=_input.get("created_by"), borrowed_by=_input.get("borrowed_by"))

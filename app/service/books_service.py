@@ -1,9 +1,11 @@
 from app.model.books import Books
+from app.model.history import History
 from app.external_api.google_books import GoogleBookAPI
 
 from datetime import datetime, date
 from dictor import dictor
 from typing import Dict
+import uuid
 
 
 def add_book(isbn: str):
@@ -192,4 +194,58 @@ def get_all_books():
 
     return {
         "books": books
+    }
+
+
+def borrow_book(isbn: str, created_by: str, borrowed_by: str):
+    """
+        Borrow the book
+    """
+    try:
+        book = Books.get_book_by_isbn(isbn)
+    except:
+        return {
+            "status": "failed",
+            "error_message": "database error"
+        }
+
+    if len(book) == 0:
+        return {
+            "status": "failed",
+            "error_message": "Book does not exists in library"
+        }
+    if book[0].get("status") != "Available":
+        return {
+            "status": "failed",
+            "error_message": "Book is not available"
+        }
+
+    try:
+        Books.update_book(isbn=book[0]['isbn'], status="Borrowed")
+    except Exception as e:
+        return {
+            "status": "failed",
+            "error_message": "database error"
+        }
+
+    try:
+        History.borrow(
+            transaction_id=str(uuid.uuid4()),
+            isbn=isbn,
+            transaction_date=datetime.utcnow(),
+            action="Borrowed",
+            created_by=created_by,
+            borrowed_by=borrowed_by
+        )
+    except:
+        # Rollback
+        Books.update_book(isbn=book.isbn, status="Available")
+        return {
+            "status": "failed",
+            "error_message": "database error"
+        }
+
+    return {
+        "status": "success",
+        "error_message": ""
     }

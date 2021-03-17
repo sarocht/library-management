@@ -33,3 +33,13 @@ delete_book_schema = {
     },
     "required": ["isbn"]
 }
+
+borrow_book_schema = {
+    "type": "object",
+    "properties": {
+        "isbn": {"type": "string"},
+        "created_by": {"type": "string"},
+        "borrowed_by": {"type": "string"},
+    },
+    "required": ["isbn", "created_by", "borrowed_by"]
+}

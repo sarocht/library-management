@@ -65,8 +65,9 @@ class Books(db.Model, SerializerMixin):
             return e
 
     @staticmethod
-    def update_book(isbn: str, title: str, subtitle: str, publisher: str,
-                    published_date: date, page_count: int, info_link: str, status: str, created_date: date):
+    def update_book(isbn: str, title: str = None, subtitle: str = None, publisher: str = None,
+                    published_date: date = None, page_count: int = None, info_link: str = None,
+                    status: str = None, created_date: date = None):
         try:
             book = db.session.query(Books).filter_by(isbn=isbn).first()
             if title is not None:
