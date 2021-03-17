@@ -77,7 +77,7 @@ def add_book(isbn: str):
     }, 500
 
 
-def get_book(typ: str, isbn: str, title: str):
+def get_book(typ: str, isbn: str = "", title: str = ""):
     """
         Search books by isbn or book title
     """
@@ -90,17 +90,17 @@ def get_book(typ: str, isbn: str, title: str):
     if typ == "isbn":
         try:
             books = Books.get_book_by_isbn(isbn)
-            if not books:
-                return common_response.BOOK_NOT_FOUND
         except:
             return common_response.DATABASE_ERROR
+        if not books:
+            return common_response.BOOK_NOT_FOUND
     else:
         try:
             books = Books.get_book_by_title(title)
-            if not books:
-                return common_response.BOOK_NOT_FOUND
         except:
             return common_response.DATABASE_ERROR
+        if not books:
+            return common_response.BOOK_NOT_FOUND
 
     return {"books": books}
 
