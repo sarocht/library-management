@@ -77,6 +77,14 @@ curl --location --request POST 'http://localhost:5000/book' \
     "isbn": "isbn:1501124021"
 }'
 ```
+add another book
+```
+curl --location --request POST 'http://localhost:5000/book' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "isbn": "isbn:1402010125"
+}'
+```
 2. Search or Get book information, you can search book by isbn or book title 
 ```
 curl --location --request GET 'http://localhost:5000/book?typ=isbn&isbn=isbn:1501124021'
@@ -103,7 +111,7 @@ curl --location --request PUT 'http://localhost:5000/book' \
 curl --location --request DELETE 'http://localhost:5000/book' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "isbn": "isbn:1501124021"
+    "isbn": "isbn:1402010125"
 }'
 ```
 5. Get all books in library
@@ -127,3 +135,4 @@ curl --location --request POST 'http://localhost:5000/book/borrow' \
 - Set logging
 - Read config from YAML file
 - Add Swagger
+- Complete all unit tests

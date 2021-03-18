@@ -2,7 +2,7 @@ from app.model.history import History
 from app.helper import common_response
 
 
-def search(typ: str, isbn: str, title: str):
+def search(typ: str, isbn: str = "", title: str = ""):
     """
         search book history by isbn or title
     """

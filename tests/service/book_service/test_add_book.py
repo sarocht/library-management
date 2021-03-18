@@ -4,7 +4,6 @@ from app.helper import common_response
 from unittest import mock
 
 
-
 @mock.patch("app.model.books.Books.add_book")
 @mock.patch("app.external_api.google_books.GoogleBookAPI.search_books")
 @mock.patch("app.model.books.Books.get_book_by_isbn")
