@@ -2,7 +2,7 @@
 this project is only used for demo purpose.
 
 ### Brief explanation
-To build rest service, I saparate program into 3 layers
+To build rest service, I separate program into 3 layers
 1. controller: mainly responsible for routing
 2. service: responsible for business logic
 3. model: responsible for interaction between server and database
