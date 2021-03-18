@@ -4,7 +4,7 @@ from .. import db
 db_bp = Blueprint('migration', __name__)
 
 
-@db_bp.cli.command('createdb')
+@db_bp.cli.command('createtables')
 def create_db():
     """
        create database
@@ -14,7 +14,7 @@ def create_db():
     db.create_all()
 
 
-@db_bp.cli.command('dropdb')
+@db_bp.cli.command('droptables')
 def drop_db():
     """
         drop database

@@ -49,8 +49,8 @@ export POSTGRES_DATABASE_NAME=postgres
 ```
 8. create tables
 ```
-flask run dropdb
-flask run createdb
+flask run droptables
+flask run createtables
 ```
 
 ### Run unit test
@@ -118,7 +118,7 @@ curl --location --request DELETE 'http://localhost:5000/book' \
 ```
 curl --location --request GET 'http://localhost:5000/books'
 ```
-6. Borrowed book
+6. Borrow book
 ```
 curl --location --request POST 'http://localhost:5000/book/borrow' \
 --header 'Content-Type: application/json' \
@@ -128,7 +128,20 @@ curl --location --request POST 'http://localhost:5000/book/borrow' \
     "borrowed_by": "note"
 }'
 ```
-
+7. Return book
+```
+curl --location --request POST 'http://localhost:5000/book/return' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "isbn": "isbn:1501124021",
+    "created_by": "nat",
+    "returned_by": "note"
+}'
+```
+8. Get book history
+```
+curl --location --request GET 'http://localhost:5000/history?typ=isbn&isbn=isbn:1501124021'
+```
 
 
 # TODO
