@@ -43,3 +43,13 @@ borrow_book_schema = {
     },
     "required": ["isbn", "created_by", "borrowed_by"]
 }
+
+return_book_schema = {
+    "type": "object",
+    "properties": {
+        "isbn": {"type": "string"},
+        "created_by": {"type": "string"},
+        "returned_by": {"type": "string"},
+    },
+    "required": ["isbn", "created_by", "returned_by"]
+}

@@ -196,17 +196,57 @@ def borrow_book(isbn: str, created_by: str, borrowed_by: str):
         return common_response.DATABASE_ERROR
 
     try:
-        History.borrow(
+        History.add(
             transaction_id=str(uuid.uuid4()),
             isbn=isbn,
             transaction_date=datetime.utcnow(),
             action="Borrowed",
             created_by=created_by,
-            borrowed_by=borrowed_by
+            action_by=borrowed_by
         )
     except:
         # Rollback
         Books.update_book(isbn=book.isbn, status="Available")
+        return common_response.DATABASE_ERROR
+
+    return common_response.SUCCESS
+
+
+def return_book(isbn: str, created_by: str, returned_by: str):
+    """
+        return book to library
+    """
+    try:
+        book = Books.get_book_by_isbn(isbn)
+    except:
+        return common_response.DATABASE_ERROR
+
+    if len(book) == 0:
+        return common_response.BOOK_NOT_FOUND
+
+    if book[0].get("status") != "Borrowed":
+        return {
+            "status": "failed",
+            "error_message": "Book is not borrowed"
+        }, 500
+
+    try:
+        Books.update_book(isbn=book[0]['isbn'], status="Available")
+    except Exception as e:
+        return common_response.DATABASE_ERROR
+
+    try:
+        History.add(
+            transaction_id=str(uuid.uuid4()),
+            isbn=isbn,
+            transaction_date=datetime.utcnow(),
+            action="Available",
+            created_by=created_by,
+            action_by=returned_by
+        )
+    except:
+        # Rollback
+        Books.update_book(isbn=book.isbn, status="Borrowed")
         return common_response.DATABASE_ERROR
 
     return common_response.SUCCESS

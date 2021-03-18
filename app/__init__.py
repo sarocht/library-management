@@ -14,9 +14,11 @@ def create_app() -> Flask:
     db.init_app(app)
 
     from app.controller.books_controller import books_bp
+    from app.controller.history_controller import history_bp
     from app.migration.db import db_bp
 
     app.register_blueprint(books_bp)
+    app.register_blueprint(history_bp)
     app.register_blueprint(db_bp)
 
     return app
