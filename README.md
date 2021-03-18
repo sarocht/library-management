@@ -36,7 +36,7 @@ pip install -r requirements.txt
 ```
 6. set up postgres database [optional: if you already have postgres server, you can skip this step]
 ```
-docker run -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=postgres -p 5432:5432 library/postgres
+docker run -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=postgres -p 5432:5432 -d library/postgres
 ```
 7. set up database configuration, please replace your database information.
 [optional: if you set up postgres database by step 6 you can skip this step]
@@ -49,8 +49,8 @@ export POSTGRES_DATABASE_NAME=postgres
 ```
 8. create tables
 ```
-flask run droptables
-flask run createtables
+flask migration droptables
+flask migration createtables
 ```
 
 ### Run unit test
