@@ -88,7 +88,7 @@ curl --location --request POST 'http://localhost:5000/book' \
 2. Search or Get book information, you can search book by isbn or book title 
 ```
 curl --location --request GET 'http://localhost:5000/book?typ=isbn&isbn=isbn:1501124021'
-curl --location --request GET 'http://localhost:5000/book?typ=title&title=Principles'
+curl --location --request GET 'http://localhost:5000/book?typ=title&title=Principles!'
 ```
 3. Update book information
 ```
