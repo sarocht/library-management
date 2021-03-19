@@ -1,0 +1,2 @@
+AVAILABLE = "Available"
+BORROWED = "Borrowed"

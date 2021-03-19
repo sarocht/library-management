@@ -2,6 +2,7 @@ from app.model.books import Books
 from app.model.history import History
 from app.external_api.google_books import GoogleBookAPI
 from app.helper import common_response
+from app.helper.enum import *
 
 from datetime import datetime, date
 from dictor import dictor
@@ -64,7 +65,7 @@ def add_book(isbn: str):
                     published_date=dictor(books, "items.0.volumeInfo.publishedDate"),
                     page_count=dictor(books, "items.0.volumeInfo.pageCount"),
                     info_link=dictor(books, "items.0.volumeInfo.infoLink"),
-                    status="Available",
+                    status=AVAILABLE,
                     created_date=date.today()
                 )
                 return common_response.SUCCESS
@@ -108,7 +109,7 @@ def get_book(typ: str, isbn: str = "", title: str = ""):
 def update_book(book: Dict):
     """
         update book using isbn key
-        Only existing field will by updated
+        Only existing field will be updated
     """
 
     try:
@@ -116,7 +117,7 @@ def update_book(book: Dict):
             book["published_date"] = datetime.strptime(book.get("published_date"), "%Y-%m-%d")
         if book.get("created_date"):
             book["created_date"] = datetime.strptime(book.get("created_date"), "%Y-%m-%d")
-        if book.get("status") and book["status"] not in ["Borrow", "Available"]:
+        if book.get("status") and book["status"] not in [BORROWED, AVAILABLE]:
             return {
                 "status": "failed",
                 "error_message": "Invalid status"
@@ -184,7 +185,7 @@ def borrow_book(isbn: str, created_by: str, borrowed_by: str):
 
     if len(book) == 0:
         return common_response.BOOK_NOT_FOUND
-    if book[0].get("status") != "Available":
+    if book[0].get("status") != AVAILABLE:
         return {
             "status": "failed",
             "error_message": "Book is not available"
@@ -206,7 +207,7 @@ def borrow_book(isbn: str, created_by: str, borrowed_by: str):
         )
     except:
         # Rollback
-        Books.update_book(isbn=book.isbn, status="Available")
+        Books.update_book(isbn=book.isbn, status=AVAILABLE)
         return common_response.DATABASE_ERROR
 
     return common_response.SUCCESS
@@ -224,14 +225,14 @@ def return_book(isbn: str, created_by: str, returned_by: str):
     if len(book) == 0:
         return common_response.BOOK_NOT_FOUND
 
-    if book[0].get("status") != "Borrowed":
+    if book[0].get("status") != BORROWED:
         return {
             "status": "failed",
             "error_message": "Book is not borrowed"
         }, 500
 
     try:
-        Books.update_book(isbn=book[0]['isbn'], status="Available")
+        Books.update_book(isbn=book[0]['isbn'], status=AVAILABLE)
     except Exception as e:
         return common_response.DATABASE_ERROR
 
@@ -240,13 +241,13 @@ def return_book(isbn: str, created_by: str, returned_by: str):
             transaction_id=str(uuid.uuid4()),
             isbn=isbn,
             transaction_date=datetime.utcnow(),
-            action="Available",
+            action=AVAILABLE,
             created_by=created_by,
             action_by=returned_by
         )
     except:
         # Rollback
-        Books.update_book(isbn=book.isbn, status="Borrowed")
+        Books.update_book(isbn=book.isbn, status=BORROWED)
         return common_response.DATABASE_ERROR
 
     return common_response.SUCCESS
